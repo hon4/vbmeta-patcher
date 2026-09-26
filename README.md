@@ -30,3 +30,12 @@ vbmeta-patcher vbmeta-original.img
 ```
 vbmeta-patcher vbmeta-original.img -e
 ```
+
+After running these commmands you will see a file ending with `-patched` in the same dir as your source file.
+For example if your source file is `vbmeta.img` the patched will be `vbmeta-patched.img`.
+
+### More info
+For detailed info you can use `-h` command.
+```
+vbmeta-patcher -h
+```
