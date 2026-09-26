@@ -1,5 +1,5 @@
 # vbmeta-patcher
-A simple, easy, tiny vbmeta patcher for all platforms to enable or disable verification.
+A simple, easy, tiny vbmeta patcher to enable or disable verification.
 
 ### How to get it on Windows
 Just get the `vbmeta-patcher-<version>.exe` file from releases.
