@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define VBMETA_PATCHER_VER "0.0.2"
+#define VBMETA_PATCHER_VER "0.0.3"
 
 void show_help();
 void show_ver();
