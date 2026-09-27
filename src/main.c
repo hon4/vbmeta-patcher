@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define VBMETA_PATCHER_VER "0.0.2"
+#define VBMETA_PATCHER_VER "0.0.1"
 
 void show_help();
 void show_ver();
@@ -13,6 +13,7 @@ int is_vbmeta(const char *file, size_t file_size);
 int main(int argc, char *argv[]) {
 	bool enable_verif = false; /* FALSE=Disable Verification, TRUE=Enable Verification */
 	bool action_set = false;
+	bool skip_magic_check = false; /* FALSE=Verify Magic, TRUE=Do not verify vbmeta magic */
 	char *infile = NULL;
 	char *outfile = NULL;
 
@@ -40,6 +41,8 @@ int main(int argc, char *argv[]) {
 		} else if (strcmp(argv[i], "-o") == 0 || strcmp(argv[i], "--output") == 0) {
 			i++; /* Next arg */
 			outfile = argv[i]; /* gets the next of -o */
+		} else if (strcmp(argv[i], "--skip-magic-check") == 0) {
+			skip_magic_check = true;
 		} else if (argv[i][0] == '-') {
 			fprintf(stderr, "Unknown option: %s\n", argv[i]);
 			fprintf(stderr, "Type -h to show help.\n", argv[0]);
@@ -89,7 +92,7 @@ int main(int argc, char *argv[]) {
 	fclose(file);
 
 	/* Check if file is a valid vbmeta.img (Has 'AVB0' magic at the begining) */
-	if (!is_vbmeta(content, bytes_read)) {
+	if (!skip_magic_check && !is_vbmeta(content, bytes_read)) {
 		fprintf(stderr, "Error: The selected image doesn't look like a valid vbmeta.img.\nError: Invalid magic.\n");
 		return 1;
 	}
@@ -141,6 +144,7 @@ void show_help() {
 	printf("  -d, --disable             Set mode to disable verification.\n");
 	printf("  -e, --enable              Set mode to enable verification.\n");
 	printf("  -o, --output  <filename>  Specify the output filename.\n");
+	printf("  --skip-magic-check        Skip the vbmeta magic verification.\n");
 	printf("\n");
 	printf("Notes:\n");
 	printf("  1. You can't use enable and disable together.\n");
