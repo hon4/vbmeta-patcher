@@ -8,6 +8,7 @@
 void show_help();
 void show_ver();
 void mkoutput_filename(const char *path, char **out);
+int is_vbmeta(const char *file, size_t file_size);
 
 int main(int argc, char *argv[]) {
 	bool enable_verif = false; /* FALSE=Disable Verification, TRUE=Enable Verification */
@@ -87,6 +88,12 @@ int main(int argc, char *argv[]) {
 
 	fclose(file);
 
+	/* Check if file is a valid vbmeta.img (Has 'AVB0' magic at the begining) */
+	if (!is_vbmeta(content, bytes_read)) {
+		fprintf(stderr, "Error: The selected image doesn't look like a valid vbmeta.img.\nError: Invalid magic.\n");
+		return 1;
+	}
+
 	/* Check if file is enugh big */
 	if (bytes_read < 123) {
 		fprintf(stderr, "Error: The selected image is too small to be patched.\nIt should be > 123 bytes but it's %zu bytes.\n", bytes_read);
@@ -163,4 +170,11 @@ void mkoutput_filename(const char *path, char **out) {
 		sprintf(*out, "%.*s-patched%s", (int)(dot - path), path, dot);
 	else
 		sprintf(*out, "%s-patched", path);
+}
+
+int is_vbmeta(const char *file, size_t file_size) {
+	if (file == NULL || file_size < 4)
+		return 0;
+
+	return memcmp(file, "AVB0", 4) == 0;
 }
