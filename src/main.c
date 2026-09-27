@@ -87,6 +87,12 @@ int main(int argc, char *argv[]) {
 
 	fclose(file);
 
+	/* Check if file is enugh big */
+	if (bytes_read < 123) {
+		fprintf(stderr, "Error: The selected image is too small to be patched.\nIt should be > 123 bytes but it's %zu bytes.\n", bytes_read);
+		return 1;
+	}
+
 	/* content now contains the vbmeta.img data - patch it */
 	if (enable_verif) {
 		content[123]=0x00; /* Enable Verification */
