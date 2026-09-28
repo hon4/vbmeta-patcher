@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	/* Start the procedure */
-	FILE *file = fopen(infile, "r");
+	FILE *file = fopen(infile, "rb");
 
 	if (file == NULL) {
 		perror("Error: Unable to read input file.\nfopen");
